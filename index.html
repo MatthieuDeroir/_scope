@@ -1,0 +1,84 @@
+---
+layout: default
+title: Home
+---
+
+<div class="hero-section">
+  <h1>Welcome to {{ site.title }}</h1>
+  <p class="lead">{{ site.description }}</p>
+  <div class="search-container">
+    <input type="text" id="search-input" placeholder="Search articles..." />
+    <div id="search-results"></div>
+  </div>
+</div>
+
+<section class="posts-section">
+  <h2>Latest Articles</h2>
+  <div class="posts-grid">
+    {% for post in paginator.posts %}
+      <article class="post-card">
+        <div class="post-meta">
+          <time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %d, %Y" }}</time>
+          {% if post.categories %}
+            <div class="categories">
+              {% for category in post.categories %}
+                <span class="category">{{ category }}</span>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+        <h3><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h3>
+        {% if post.excerpt %}
+          <div class="post-excerpt">
+            {{ post.excerpt | strip_html | truncatewords: 30 }}
+          </div>
+        {% endif %}
+        {% if post.tags %}
+          <div class="tags">
+            {% for tag in post.tags %}
+              <span class="tag">#{{ tag }}</span>
+            {% endfor %}
+          </div>
+        {% endif %}
+        <a href="{{ post.url | relative_url }}" class="read-more">Read More →</a>
+      </article>
+    {% endfor %}
+  </div>
+
+  <!-- Pagination -->
+  {% if paginator.total_pages > 1 %}
+    <nav class="pagination">
+      {% if paginator.previous_page %}
+        <a href="{{ paginator.previous_page_path | relative_url }}" class="pagination-link">« Previous</a>
+      {% endif %}
+      
+      {% for page in (1..paginator.total_pages) %}
+        {% if page == paginator.page %}
+          <span class="pagination-link current">{{ page }}</span>
+        {% elsif page == 1 %}
+          <a href="{{ '/' | relative_url }}" class="pagination-link">{{ page }}</a>
+        {% else %}
+          <a href="{{ site.paginate_path | relative_url | replace: ':num', page }}" class="pagination-link">{{ page }}</a>
+        {% endif %}
+      {% endfor %}
+      
+      {% if paginator.next_page %}
+        <a href="{{ paginator.next_page_path | relative_url }}" class="pagination-link">Next »</a>
+      {% endif %}
+    </nav>
+  {% endif %}
+</section>
+
+<!-- Featured/Popular Posts Section -->
+<section class="featured-section">
+  <h2>Featured Articles</h2>
+  <div class="featured-posts">
+    {% assign featured_posts = site.posts | where: "featured", true | limit: 3 %}
+    {% for post in featured_posts %}
+      <article class="featured-post">
+        <h4><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h4>
+        <p>{{ post.excerpt | strip_html | truncatewords: 15 }}</p>
+      </article>
+    {% endfor %}
+  </div>
+</section>

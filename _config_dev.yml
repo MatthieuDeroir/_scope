@@ -1,0 +1,60 @@
+# Development configuration
+# Override settings for local development
+# Usage: bundle exec jekyll serve --config _config.yml,_config_dev.yml
+
+# Local development settings
+url: "http://localhost:4000"
+baseurl: ""
+
+# Show drafts and future posts in development
+show_drafts: true
+future: true
+unpublished: true
+
+# Faster regeneration
+incremental: true
+livereload: true
+livereload_port: 35729
+
+# Development plugins
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-paginate
+
+# Disable some optimizations for faster builds
+sass:
+  style: expanded
+  line_comments: true
+
+# Enable full error reporting
+strict_front_matter: true
+liquid:
+  error_mode: strict
+  strict_filters: true
+  strict_variables: true
+
+# Development-specific excludes (less restrictive)
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - package.json
+  - package-lock.json
+  - gulpfile.js
+  - webpack.config.js
+
+# Analytics (disabled in development)
+google_analytics: ""
+
+# Comments (use test environment)
+disqus:
+  shortname: ""
+
+# Development mode flag
+development: true

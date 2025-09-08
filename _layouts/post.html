@@ -1,0 +1,136 @@
+---
+layout: default
+---
+
+<article class="post">
+  <header class="post-header">
+    <h1 class="post-title">{{ page.title }}</h1>
+    <div class="post-meta">
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %d, %Y" }}</time>
+      {% if page.author %}
+        <span class="author">by {{ page.author }}</span>
+      {% endif %}
+      {% if page.categories %}
+        <div class="categories">
+          {% for category in page.categories %}
+            <span class="category">{{ category }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+    {% if page.tags %}
+      <div class="tags">
+        {% for tag in page.tags %}
+          <span class="tag">#{{ tag }}</span>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </header>
+
+  <!-- Table of Contents (auto-generated) -->
+  <div class="toc-container">
+    <button class="toc-toggle" onclick="toggleToc()">📋 Table of Contents</button>
+    <div id="toc" class="toc"></div>
+  </div>
+
+  <!-- Social sharing -->
+  <div class="social-share">
+    <span>Share this article:</span>
+    <a href="https://twitter.com/intent/tweet?url={{ page.url | absolute_url }}&text={{ page.title | uri_escape }}" target="_blank" rel="noopener">Twitter</a>
+    <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ page.url | absolute_url }}" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://www.facebook.com/sharer/sharer.php?u={{ page.url | absolute_url }}" target="_blank" rel="noopener">Facebook</a>
+  </div>
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+
+  <!-- Article navigation -->
+  <nav class="post-navigation">
+    {% if page.previous.url %}
+      <div class="prev-post">
+        <a href="{{ page.previous.url | relative_url }}">
+          <span class="nav-label">← Previous</span>
+          <span class="nav-title">{{ page.previous.title }}</span>
+        </a>
+      </div>
+    {% endif %}
+    
+    {% if page.next.url %}
+      <div class="next-post">
+        <a href="{{ page.next.url | relative_url }}">
+          <span class="nav-label">Next →</span>
+          <span class="nav-title">{{ page.next.title }}</span>
+        </a>
+      </div>
+    {% endif %}
+  </nav>
+
+  <!-- Related articles -->
+  <section class="related-posts">
+    <h3>Related Articles</h3>
+    {% assign related_posts = site.related_posts | limit: 3 %}
+    {% if related_posts.size > 0 %}
+      <div class="related-grid">
+        {% for related in related_posts %}
+          <article class="related-post">
+            <h4><a href="{{ related.url | relative_url }}">{{ related.title }}</a></h4>
+            <time>{{ related.date | date: "%B %d, %Y" }}</time>
+          </article>
+        {% endfor %}
+      </div>
+    {% else %}
+      <!-- Fallback to recent posts if no related posts -->
+      {% assign recent_posts = site.posts | where_exp: "post", "post.url != page.url" | limit: 3 %}
+      <div class="related-grid">
+        {% for post in recent_posts %}
+          <article class="related-post">
+            <h4><a href="{{ post.url | relative_url }}">{{ post.title }}</a></h4>
+            <time>{{ post.date | date: "%B %d, %Y" }}</time>
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </section>
+
+  <!-- Comments placeholder -->
+  <section class="comments-section">
+    <h3>Comments</h3>
+    <div class="comments-placeholder">
+      <p>Comments section would be integrated here using a service like Disqus, Utterances, or a custom solution.</p>
+      <p>Configuration can be found in <code>_config.yml</code>.</p>
+    </div>
+  </section>
+</article>
+
+<script>
+  // Table of Contents generation
+  function generateToc() {
+    const toc = document.getElementById('toc');
+    const headings = document.querySelectorAll('.post-content h2, .post-content h3, .post-content h4');
+    
+    if (headings.length === 0) {
+      document.querySelector('.toc-container').style.display = 'none';
+      return;
+    }
+    
+    let tocHTML = '<ul>';
+    headings.forEach((heading, index) => {
+      const id = heading.id || `heading-${index}`;
+      heading.id = id;
+      const level = heading.tagName.toLowerCase();
+      tocHTML += `<li class="toc-${level}"><a href="#${id}">${heading.textContent}</a></li>`;
+    });
+    tocHTML += '</ul>';
+    
+    toc.innerHTML = tocHTML;
+  }
+  
+  function toggleToc() {
+    const toc = document.getElementById('toc');
+    toc.style.display = toc.style.display === 'none' ? 'block' : 'none';
+  }
+  
+  // Generate TOC when page loads
+  document.addEventListener('DOMContentLoaded', generateToc);
+</script>

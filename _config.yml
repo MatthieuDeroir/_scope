@@ -1,0 +1,76 @@
+# Site settings
+title: Tech Articles Blog
+description: A collection of articles about web development and technology
+url: "https://username.github.io"
+baseurl: "/my-blog"
+author: Your Name
+email: your.email@example.com
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+  - jekyll-paginate
+
+# Pagination
+paginate: 5
+paginate_path: "/page:num/"
+
+# Permalink structure
+permalink: /:categories/:year/:month/:day/:title/
+
+# Collections
+collections:
+  posts:
+    output: true
+    permalink: /:collection/:year/:month/:day/:title/
+
+# Default values
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Tech Articles Team"
+  - scope:
+      path: ""
+      type: "pages"
+    values:
+      layout: "page"
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+
+# SEO settings
+twitter:
+  username: your_twitter
+  card: summary
+
+facebook:
+  app_id: your_facebook_app_id
+
+social:
+  name: Tech Articles Blog
+  links:
+    - https://twitter.com/your_twitter
+    - https://github.com/your_github
+
+# Analytics
+google_analytics: G-XXXXXXXXXX
+
+# Comments (placeholder for future integration)
+disqus:
+  shortname: your-disqus-shortname

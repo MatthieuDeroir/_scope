@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% include head.html %}
+  <body>
+    {% include header.html %}
+    
+    <main class="main-content">
+      {{ content }}
+    </main>
+    
+    {% include footer.html %}
+    
+    <!-- Theme Toggle Script -->
+    <script>
+      // Check for saved theme preference or default to 'light'
+      const currentTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      
+      function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+      }
+    </script>
+    
+    <!-- Search functionality -->
+    <script>
+      // Simple client-side search
+      if (document.getElementById('search-input')) {
+        const searchInput = document.getElementById('search-input');
+        const searchResults = document.getElementById('search-results');
+        
+        // This would be enhanced with a proper search index
+        searchInput.addEventListener('input', function(e) {
+          const query = e.target.value.toLowerCase();
+          if (query.length > 2) {
+            // Placeholder for search functionality
+            searchResults.innerHTML = '<p>Search functionality would be implemented here</p>';
+            searchResults.style.display = 'block';
+          } else {
+            searchResults.style.display = 'none';
+          }
+        });
+      }
+    </script>
+    
+    <script src="{{ '/assets/js/main.js' | relative_url }}"></script>
+  </body>
+</html>

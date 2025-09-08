@@ -1,0 +1,74 @@
+<header class="site-header">
+  <div class="header-container">
+    <div class="header-brand">
+      <a href="{{ '/' | relative_url }}" class="site-title">{{ site.title }}</a>
+    </div>
+    
+    <!-- Mobile menu toggle -->
+    <button class="mobile-menu-toggle" onclick="toggleMobileMenu()" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+    
+    <nav class="site-nav" id="site-nav">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a href="{{ '/' | relative_url }}" class="nav-link {% if page.url == '/' %}active{% endif %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a href="{{ '/about/' | relative_url }}" class="nav-link {% if page.url == '/about/' %}active{% endif %}">About</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a href="#" class="nav-link dropdown-toggle">Categories</a>
+          <ul class="dropdown-menu">
+            {% assign categories = site.categories | sort %}
+            {% for category in categories %}
+              <li><a href="{{ '/categories/' | append: category[0] | downcase | relative_url }}">{{ category[0] }}</a></li>
+            {% endfor %}
+          </ul>
+        </li>
+        <li class="nav-item">
+          <a href="{{ '/feed.xml' | relative_url }}" class="nav-link">RSS</a>
+        </li>
+      </ul>
+      
+      <!-- Theme toggle button -->
+      <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark/light theme">
+        <span class="theme-toggle-sun">☀️</span>
+        <span class="theme-toggle-moon">🌙</span>
+      </button>
+    </nav>
+  </div>
+</header>
+
+<script>
+  function toggleMobileMenu() {
+    const nav = document.getElementById('site-nav');
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    
+    nav.classList.toggle('active');
+    toggle.classList.toggle('active');
+  }
+  
+  // Close mobile menu when clicking outside
+  document.addEventListener('click', function(event) {
+    const nav = document.getElementById('site-nav');
+    const toggle = document.querySelector('.mobile-menu-toggle');
+    const header = document.querySelector('.site-header');
+    
+    if (!header.contains(event.target)) {
+      nav.classList.remove('active');
+      toggle.classList.remove('active');
+    }
+  });
+  
+  // Handle dropdown menus
+  document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+    toggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      const dropdown = this.parentNode;
+      dropdown.classList.toggle('active');
+    });
+  });
+</script>

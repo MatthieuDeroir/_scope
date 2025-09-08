@@ -1,0 +1,62 @@
+{
+  "name": "tech-articles-blog",
+  "version": "1.0.0",
+  "description": "A modern Jekyll blog for tech articles and web development content",
+  "main": "index.js",
+  "scripts": {
+    "dev": "bundle exec jekyll serve --config _config.yml,_config_dev.yml --livereload --drafts",
+    "build": "JEKYLL_ENV=production bundle exec jekyll build",
+    "build:dev": "bundle exec jekyll build --config _config.yml,_config_dev.yml",
+    "clean": "bundle exec jekyll clean",
+    "serve": "bundle exec jekyll serve",
+    "serve:prod": "JEKYLL_ENV=production bundle exec jekyll serve",
+    "lint:css": "stylelint assets/css/**/*.css --fix",
+    "lint:js": "eslint assets/js/**/*.js --fix",
+    "format": "prettier --write assets/js/**/*.js assets/css/**/*.css",
+    "test": "bundle exec jekyll build && htmlproofer ./_site",
+    "lighthouse": "lighthouse-ci autorun",
+    "deploy": "npm run build && npm run lighthouse",
+    "setup": "bundle install && npm install",
+    "update": "bundle update && npm update"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/my-blog.git"
+  },
+  "keywords": [
+    "jekyll",
+    "blog",
+    "static-site",
+    "jamstack",
+    "web-development",
+    "technology",
+    "articles"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yourusername/my-blog/issues"
+  },
+  "homepage": "https://github.com/yourusername/my-blog#readme",
+  "devDependencies": {
+    "@lhci/cli": "^0.12.0",
+    "eslint": "^8.50.0",
+    "eslint-config-standard": "^17.1.0",
+    "htmlproofer": "^5.0.0",
+    "prettier": "^3.0.3",
+    "stylelint": "^15.10.3",
+    "stylelint-config-standard": "^34.0.0"
+  },
+  "dependencies": {
+    "prismjs": "^1.29.0"
+  },
+  "browserslist": [
+    "defaults",
+    "not IE 11",
+    "not op_mini all"
+  ],
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  }
+}

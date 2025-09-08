@@ -1,0 +1,40 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "rules": {
+    "custom-property-pattern": "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+    "selector-class-pattern": "^([a-z][a-z0-9]*)(-[a-z0-9]+)*$",
+    "declaration-block-trailing-semicolon": "always",
+    "declaration-colon-space-after": "always",
+    "declaration-colon-space-before": "never",
+    "block-closing-brace-newline-after": "always",
+    "block-closing-brace-newline-before": "always",
+    "block-opening-brace-newline-after": "always",
+    "block-opening-brace-space-before": "always",
+    "color-hex-length": "short",
+    "color-hex-case": "lower",
+    "function-comma-space-after": "always",
+    "function-comma-space-before": "never",
+    "indentation": 2,
+    "max-line-length": 120,
+    "no-duplicate-selectors": true,
+    "no-empty-source": null,
+    "number-leading-zero": "always",
+    "property-no-unknown": [
+      true,
+      {
+        "ignoreProperties": [
+          "font-display",
+          "backdrop-filter"
+        ]
+      }
+    ],
+    "selector-pseudo-element-colon-notation": "double",
+    "string-quotes": "single",
+    "unit-case": "lower"
+  },
+  "ignoreFiles": [
+    "_site/**/*.css",
+    "vendor/**/*.css",
+    "node_modules/**/*.css"
+  ]
+}

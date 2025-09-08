@@ -1,0 +1,138 @@
+---
+layout: default
+title: "You're Offline"
+permalink: /offline.html
+---
+
+<div style="text-align: center; padding: 4rem 1rem;">
+  <div style="font-size: 4rem; margin-bottom: 2rem;">📡</div>
+  
+  <h1 style="font-size: 2.5rem; margin-bottom: 1rem; color: var(--text-primary);">
+    You're Currently Offline
+  </h1>
+  
+  <p style="font-size: 1.25rem; color: var(--text-secondary); margin-bottom: 2rem; max-width: 600px; margin-left: auto; margin-right: auto;">
+    It looks like you've lost your internet connection. Don't worry! You can still browse some of the content that's been cached.
+  </p>
+  
+  <div style="background-color: var(--bg-secondary); border-radius: 0.75rem; padding: 2rem; margin: 2rem auto; max-width: 500px;">
+    <h2 style="font-size: 1.5rem; margin-bottom: 1rem; color: var(--primary-color);">
+      What you can do:
+    </h2>
+    
+    <ul style="text-align: left; color: var(--text-secondary); line-height: 1.8;">
+      <li>Check your internet connection</li>
+      <li>Try refreshing the page</li>
+      <li>Browse previously visited pages</li>
+      <li>Come back when you're back online</li>
+    </ul>
+  </div>
+  
+  <div style="margin-top: 3rem;">
+    <button onclick="window.location.reload()" style="
+      background-color: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 0.75rem 2rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-right: 1rem;
+      transition: background-color 0.2s ease;
+    " onmouseover="this.style.backgroundColor='var(--primary-hover)'" onmouseout="this.style.backgroundColor='var(--primary-color)'">
+      Try Again
+    </button>
+    
+    <a href="/" style="
+      display: inline-block;
+      color: var(--primary-color);
+      text-decoration: none;
+      padding: 0.75rem 2rem;
+      border: 2px solid var(--primary-color);
+      border-radius: 0.5rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    " onmouseover="this.style.backgroundColor='var(--primary-color)'; this.style.color='white'" onmouseout="this.style.backgroundColor='transparent'; this.style.color='var(--primary-color)'">
+      Go to Homepage
+    </a>
+  </div>
+  
+  <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--border-color);">
+    <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: var(--text-primary);">
+      Recently Cached Articles
+    </h3>
+    
+    <div id="cached-articles" style="text-align: left; max-width: 600px; margin: 0 auto;">
+      <!-- Cached articles will be populated by JavaScript -->
+      <p style="color: var(--text-muted); font-style: italic;">
+        No cached articles available. Visit some articles while online to access them offline.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Check if we're actually offline
+  function updateOnlineStatus() {
+    if (navigator.onLine) {
+      // We're back online, redirect to home
+      window.location.href = '/';
+    }
+  }
+  
+  // Listen for online status changes
+  window.addEventListener('online', updateOnlineStatus);
+  
+  // Try to load cached articles from service worker cache
+  if ('caches' in window) {
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (cacheName.includes('runtime')) {
+            return caches.open(cacheName).then(cache => {
+              return cache.keys().then(requests => {
+                const articleRequests = requests.filter(request => 
+                  request.url.includes('/20') && // Posts have dates in URL
+                  !request.url.includes('assets') &&
+                  !request.url.includes('api')
+                );
+                return articleRequests.slice(0, 5); // Show max 5 cached articles
+              });
+            });
+          }
+        })
+      );
+    }).then(results => {
+      const allArticles = results.filter(Boolean).flat();
+      if (allArticles.length > 0) {
+        const container = document.getElementById('cached-articles');
+        container.innerHTML = allArticles.map(request => {
+          const url = new URL(request.url);
+          const path = url.pathname;
+          const title = path.split('/').pop().replace(/\d{4}-\d{2}-\d{2}-/, '').replace(/-/g, ' ');
+          
+          return `
+            <div style="padding: 1rem; margin-bottom: 1rem; background-color: var(--bg-primary); border: 1px solid var(--border-color); border-radius: 0.5rem;">
+              <a href="${path}" style="color: var(--primary-color); text-decoration: none; font-weight: 600; text-transform: capitalize;">
+                ${title}
+              </a>
+              <p style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.5rem; margin-bottom: 0;">
+                Available offline
+              </p>
+            </div>
+          `;
+        }).join('');
+      }
+    }).catch(error => {
+      console.log('Could not load cached articles:', error);
+    });
+  }
+  
+  // Periodically check if we're back online
+  setInterval(() => {
+    if (navigator.onLine) {
+      updateOnlineStatus();
+    }
+  }, 5000);
+</script>
