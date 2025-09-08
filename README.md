@@ -352,3 +352,4 @@ If you encounter any issues or have questions:
 **Happy blogging!** 🎉
 
 For more detailed documentation, check out the [Jekyll documentation](https://jekyllrb.com/docs/) and [GitHub Pages documentation](https://docs.github.com/en/pages).# _scope
+# scope.github.io
